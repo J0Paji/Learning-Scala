@@ -76,6 +76,109 @@ object oopsInScala extends App{
 
   //operators are actually Methods in SCALA
   val simpleAdd = 1 + 2 //here "+" operator is a method belonging to the INT type
+
+  //anonymous functions
+  //it means you can extend a trait on the go as traits are typically
+  //in C++/Java used to extend concrete classes but in SCALA
+  //you can use them to instantiate objects as well.
+  val dinosaur = new carnivore{
+    override def eat(animal: Animal): Unit = println("I eat everything.")
+  }
+  //the above thing pretty much is treated as below by compiler
+  //it creates a new class with random name on the fly
+  /* 
+    class carnivore_anonymous_35737 extends carnivore{
+    override def eat(animal: Animal): Unit = println("I eat everything.")
+    }
+    val dinosaur = new carnivore_anonymous_35737
+   */
+
+   //singleton object
+   object  mySingleton { //here we've defined the class mySinleton and also the only single instance of this type.
+    val mySplValue: Int = 0
+    def mySplMethod() : Int = 0
+    //special method - apply
+    //apply can be applied to any class in SCALA
+    def apply(x: Int): Int = x+1
+   }
+
+   mySingleton.mySplMethod() //can call methods like any other class
+   mySingleton.apply(40) //is equivalent to below line
+   mySingleton(40)
+
+   /* the presence of a apply method in a class allows
+      that class to be invoked like functions. */
+
+   //in the same file you can have a class and singleton object with the same name
+
+   object Animal { //now class and singleton object Animal are called "companions"
+   //companions have a spl property that they can access each other private
+   //attributes and methods
+   //singleton Animal and instances of Animal are different things
+   //usually this singleton animal companion object is used to define
+   //things that are not dependent on the animal instances
+
+   val canLiveInDefinetly: Boolean = false
+   }
+   val animalsCanLiveForever: Boolean = Animal.canLiveInDefinetly //static field/methods
+
+   /*  
+   Case Class - lightweight data structures with some boilerplate
+   used for -
+   sensible equals and hash code
+   sensible quick serialization
+   companion for apply
+   case classes automatically generate a class companion object
+   */
+  case class Person(name: String, age: Int)
+  //may be constructed without keyword new
+  val JoPaji = Person("JoPaji", 27) //this is eq to Person.apply("JoPaji", 27) as a companion object is automatically generated
+
+  //Exceptions
+  try {
+    val x: String = null 
+    x.length() //this will cause an error as we're accessing length of null objects
+  }
+  catch {
+    case e:Exception => "Some Error Occured"
+  }
+  finally {
+    //exectue something run no matter what
+    //useful for closing connections, files 
+  }
+  /* 
+  Difficult stuff for Python Devs AHEAD
+   */
+  //generics
+  abstract class myList[T]{ //T is a type argument
+    def head: T
+    def tail: myList[T]
+  }
+  //if we use it later the T type argument becomes concrete
+  //using a generic with a concrete type
+  val aList: List[Int] = List(1,2,3) //its actually the companion object of the List object
+                                     // eq to List.apply(1,2,3)
+  val aHead = aList.head //the head method returns T of type Int 
+                         //so the compiler know aHead is of type Int
+
+  /* Key Points in SCALA 
+  Point 1 - In SCALA we usually work with IMMUTABLE objects/values.
+  Hence, any modification to a value/object must return another object
   
+  Benefits - 
+  1) works miracles/very fast in distributed/multithreaded enviorments
+  2) makes code reasonable in large code bases called "reasoning about"
+   */
+
+  val reversedList = aList.reverse // returns a new variable
+
+  /* 
+  Point 2 - SCALA is close to OO ideal as everything is inside an instance
+  of something. Everything is a part of an object or class. */
+  
+
+
+
+
 
 }
